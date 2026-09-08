@@ -1,5 +1,12 @@
 import streamlit as st
 
-st.title("📈 Umsatz & Produktperformance")
+st.set_page_config(
+    page_title="Umsatz & Produktperformance",
+    page_icon="📈",
+    layout="wide"
+)
 
-st.write("Hier kommt später das Sales Dashboard hin.")
+st.title("📈 Umsatz & Produktperformance")
+st.divider()
+
+st.write("Umsatz und Produktdashboard.")
