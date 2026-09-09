@@ -1,4 +1,10 @@
 import streamlit as st
+from src.cleaning import clean_sales
+from src.kpis import total_revenue, total_units, top_product
+import pandas as pd
+
+plz_clean = pd.read_excel("data/reference/Liste-der-PLZ-in-Excel-Karte-Deutschland-Postleitzahlen.xlsx")
+plz_clean['PLZ'] = plz_clean['PLZ'].astype(str).str.zfill(5)
 
 st.set_page_config(
     page_title="Nobite Analytics",
@@ -6,11 +12,11 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("🦟 Nobite Analytics")
+st.title("🦟 Nobite Analytics für Deutschland")
 st.write("Upload your reports and turn them into insights.")
 st.divider()
 st.header("Dateien hochladen")
-uploaded_files = st.file_uploader("Sales & Inventory Files", type=["xlsx", "xls", "xlsm"], accept_multiple_files=True, label_visibility="collapsed")
+uploaded_files = st.file_uploader("Sales & Inventory Files", type=["xlsx", "xls", "xlsm", "xlrd"], accept_multiple_files=True, label_visibility="collapsed")
 umsatzstatistik_list = []
 lagerliste = []
 # List per file type
@@ -30,6 +36,9 @@ with col1:
                 umsatzstatistik_list.append(uploaded_file)
         st.success("Data Ready ✅")
         st.caption(f"{len(umsatzstatistik_list)} Umsatzstatistiken ausgewählt")
+    if umsatzstatistik_list:
+        sales_dfs = [clean_sales(pd.read_excel(f), plz_clean) for f in umsatzstatistik_list]
+        st.session_state["sales_all"] = pd.concat(sales_dfs, ignore_index=True)
 
 with col2:
     st.header("Lagerliste")
