@@ -9,4 +9,4 @@ data/processed/
 outputs/
 
 .streamlit/secrets.toml
-~$*
+~$**.mov
