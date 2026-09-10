@@ -10,3 +10,5 @@ outputs/
 
 .streamlit/secrets.toml
 ~$**.mov
+*.mov
+~$*.docx
