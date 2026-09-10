@@ -1,6 +1,6 @@
 import streamlit as st
 from src.cleaning import clean_sales
-from src.kpis import total_revenue, total_units, top_product
+from src.cleaning import clean_sales, clean_inventory
 import pandas as pd
 
 plz_clean = pd.read_excel("data/reference/Liste-der-PLZ-in-Excel-Karte-Deutschland-Postleitzahlen.xlsx")
@@ -53,6 +53,9 @@ with col2:
                 lagerliste.append(uploaded_file)
         st.success("Data Ready ✅")
         st.caption(f"{len(lagerliste)} Lagerlisten ausgewählt")
+    if lagerliste:
+        inventory_dfs = [clean_inventory(pd.read_excel(f)).assign(Berichtsmonat=f.name[-15:-8]) for f in lagerliste]
+        st.session_state["inventory_all"] = pd.concat(inventory_dfs, ignore_index=True)
 
 if len(lagerliste) != len(umsatzstatistik_list):
     st.warning('Achtung ungleiche Menge an Datein ⚠️ !!! ')

@@ -88,3 +88,35 @@ def revenue_change_yoy(current_df, previous_year_df):
         current_revenue,
         previous_year_revenue
     )
+
+# Dashboard 3: Inventory & Demand
+
+# Dashboard 3: Inventory & Demand
+
+def calculate_endbestand(inventory):
+    return inventory["Endbestand"].sum()
+
+
+def calculate_lagerabgang(inventory):
+    return abs(inventory["Abgang"].sum())
+
+
+def calculate_lagerreichweite(inventory):
+    endbestand = calculate_endbestand(inventory)
+    lagerabgang = calculate_lagerabgang(inventory)
+
+    if lagerabgang == 0:
+        return 0
+
+    return round(endbestand / lagerabgang, 1)
+
+
+def calculate_lagerstatus(inventory):
+    lagerreichweite = calculate_lagerreichweite(inventory)
+
+    if lagerreichweite >= 3:
+        return "Ausreichend"
+    elif lagerreichweite >= 2:
+        return "Beobachten"
+    else:
+        return "Niedrig"

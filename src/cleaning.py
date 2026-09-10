@@ -60,3 +60,20 @@ def clean_sales(df, plz_df):
     )
 
     return df
+
+# inventory data cleaning
+def clean_inventory(df):
+    df = df.copy()
+
+    df["ArtikelNr"] = df["ArtikelNr"].astype(str)
+    df["Charge"] = df["Charge"].astype(str)
+
+    df["Bezeichnung"] = df["Bezeichnung"].apply(clean_text)
+
+    df[
+        ["Zugang", "Abgang", "Retouren", "sonstige Vernichtung", "Inventuren"]
+    ] = df[
+        ["Zugang", "Abgang", "Retouren", "sonstige Vernichtung", "Inventuren"]
+    ].fillna(0)
+
+    return df
