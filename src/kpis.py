@@ -1,5 +1,5 @@
 # KPI functions for Nobite Analytics
-
+import pandas as pd
 
 def calculate_change(current_value, comparison_value):
     # Calculate percentage change between two periods
@@ -34,10 +34,78 @@ def top_product(df):
 
     return product_revenue.index[0], product_revenue.iloc[0]
 
+# Product Performance Matrix
+def product_performance(current_df, comparison_df=None):
 
+    # Current Product Performance
+    product_performance = (
+        current_df.groupby("Bezeichnung")
+        .agg(
+            Umsatz=("Umsatz", "sum"),
+            Verkaufte_Stückzahl=("Liefermenge", "sum")
+        )
+        .reset_index()
+    )
+
+    # No Comparison
+    if comparison_df is None:
+        return product_performance
+
+    # Comparison Product Performance
+    comparison_performance = (
+        comparison_df.groupby("Bezeichnung")
+        .agg(
+            Umsatz_Vergleich=("Umsatz", "sum"),
+            Stückzahl_Vergleich=("Liefermenge", "sum")
+        )
+        .reset_index()
+    )
+
+    # Merge Product Performance
+    merged_df = pd.merge(
+        product_performance,
+        comparison_performance,
+        on="Bezeichnung"
+    )
+
+    # Revenue Change
+    merged_df["Umsatzveränderung"] = (
+        (merged_df["Umsatz"] - merged_df["Umsatz_Vergleich"])
+        / merged_df["Umsatz_Vergleich"]
+    ) * 100
+
+    # Units Change
+    merged_df["Stückzahlveränderung"] = (
+        (merged_df["Verkaufte_Stückzahl"] - merged_df["Stückzahl_Vergleich"])
+        / merged_df["Stückzahl_Vergleich"]
+    ) * 100
+
+    return merged_df
+
+## Sales Trend Line Chart
+def sales_trend(sales_all):
+
+    # Revenue per Month
+    trend_df = (
+        sales_all
+        .groupby("Berichtsmonat", as_index=False)["Umsatz"]
+        .sum()
+    )
+
+    # Split Year and Month
+    trend_df["Jahr"] = trend_df["Berichtsmonat"].str[:4]
+    trend_df["Monat"] = trend_df["Berichtsmonat"].str[5:7]
+
+    # Prepare Year Comparison
+    year_comparison = trend_df.pivot(
+        index="Monat",
+        columns="Jahr",
+        values="Umsatz"
+    ).reset_index()
+
+    return year_comparison
 
 # Dashboard 2: Customer & Regional Performance
-
 
 def top_customer(df):
     # KPI 1: Top Customer by Revenue
@@ -91,7 +159,6 @@ def revenue_change_yoy(current_df, previous_year_df):
 
 # Dashboard 3: Inventory & Demand
 
-# Dashboard 3: Inventory & Demand
 
 def calculate_endbestand(inventory):
     return inventory["Endbestand"].sum()
