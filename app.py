@@ -2,6 +2,11 @@ import streamlit as st
 from src.cleaning import clean_sales
 from src.cleaning import clean_sales, clean_inventory
 import pandas as pd
+import re
+
+def get_report_month(filename):
+    match = re.search(r"\d{4}-\d{2}", filename)
+    return match.group()
 
 plz_clean = pd.read_excel("data/reference/Liste-der-PLZ-in-Excel-Karte-Deutschland-Postleitzahlen.xlsx")
 plz_clean['PLZ'] = plz_clean['PLZ'].astype(str).str.zfill(5)
@@ -54,7 +59,8 @@ with col2:
         st.success("Data Ready ✅")
         st.caption(f"{len(lagerliste)} Lagerlisten ausgewählt")
     if lagerliste:
-        inventory_dfs = [clean_inventory(pd.read_excel(f)).assign(Berichtsmonat=f.name[-15:-8]) for f in lagerliste]
+        inventory_dfs = [clean_inventory(pd.read_excel(f)).assign(Berichtsmonat=get_report_month(f.name))
+        for f in lagerliste]
         st.session_state["inventory_all"] = pd.concat(inventory_dfs, ignore_index=True)
 
 if len(lagerliste) != len(umsatzstatistik_list):

@@ -21,16 +21,41 @@ sales_all = st.session_state.get("sales_all")
 if sales_all is None:
     st.warning("Bitte zuerst auf der Startseite Dateien hochladen. ⚠️")
 else:
-    periods = sorted(sales_all["Berichtsmonat"].unique())
+    # Copy data for period selection
+    sales_view = sales_all.copy()
+
+    # Choose view: month; half year, full year
+    ansicht = st.radio(
+        "Ansicht",
+        ["Monat", "Halbjahr", "Jahr"],
+        horizontal=True
+    )
+    #month
+    if ansicht == "Monat":
+        sales_view["Anzeigeperiode"] = sales_view["Berichtsmonat"]
+
+    #half year
+    elif ansicht == "Halbjahr":
+        jahr = sales_view["Berichtsmonat"].str[:4]
+        monat = sales_view["Berichtsmonat"].str[5:7].astype(int)
+        halbjahr = monat.apply(
+            lambda m: "H1" if m <= 6 else "H2")
+        sales_view["Anzeigeperiode"] = jahr + "-" + halbjahr
+
+    #year
+    else:
+        sales_view["Anzeigeperiode"] = sales_view["Berichtsmonat"].str[:4]
+
+    # Available periods
+    periods = sorted(sales_view["Anzeigeperiode"].unique())
 
     col_a, col_b = st.columns(2)
-
     selected_period = col_a.selectbox("Periode", periods, index=len(periods) - 1)
-
     selected_comparison = col_b.selectbox("Vergleichen mit", ["Kein Vergleich"] + periods)
 
-    # filter selected period
-    current_df = sales_all[sales_all["Berichtsmonat"] == selected_period]
+     # Filter selected period
+    current_df = sales_view[
+    sales_view["Anzeigeperiode"] == selected_period]
 
     # KPI calc
     revenue = total_revenue(current_df)
@@ -43,7 +68,9 @@ else:
     comparison_product_name = None
 
     if selected_comparison != "Kein Vergleich":
-        comparison_df = sales_all[sales_all["Berichtsmonat"] == selected_comparison]
+        comparison_df = sales_view[
+            sales_view["Anzeigeperiode"] == selected_comparison]
+
         comparison_revenue = total_revenue(comparison_df)
         comparison_units = total_units(comparison_df)
         comparison_product_name, _ = top_product(comparison_df)
