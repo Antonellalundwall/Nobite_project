@@ -181,4 +181,37 @@ else:
 
     st.dataframe(product_inventory,  use_container_width=True, hide_index=True)
 
+
 ################################# KEY INSIGHTS #################################
+
+    st.subheader("Key Insights")
+
+    insights = []
+
+    # Highest stock
+    highest_stock = product_inventory.loc[product_inventory["Endbestand"].idxmax()]
+
+    # Top wholesaler
+    insights.append(
+        f"🏆 **Höchster Lagerbestand:** {highest_stock['Produkt']} "
+        f"hat am Periodenende mit **{highest_stock['Endbestand']:,.0f} Stück** "
+        f"den höchsten Bestand.")
+
+    # lowest stock
+    lowest_stock = product_inventory.loc[product_inventory["Endbestand"].idxmin()]
+
+    insights.append(
+        f"⚠️ **Niedrigster Lagerbestand:** {lowest_stock['Produkt']} "
+        f"hat am Periodenende mit **{lowest_stock['Endbestand']:,.0f} Stück** "
+    )
+    # highest outflow
+    highest_outflow = product_inventory.loc[product_inventory["Lagerabgang"].idxmax()]
+
+    insights.append(
+        f"📦 **Höchster Lagerabgang:** {highest_outflow['Produkt']} "
+        f"hat im ausgewählten Zeitraum mit **{highest_outflow['Lagerabgang']:,.0f} Stück** "
+        f"den höchsten Lagerabgang."
+    )
+
+    #all insights in one box:
+    st.info("\n\n".join(insights))
