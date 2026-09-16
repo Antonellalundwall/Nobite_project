@@ -90,7 +90,7 @@ else:
 
     if comparison_product_name:
         st.caption(f"Vergleich: {comparison_product_name}")
-
+    st.divider()
 
 ################################### Charts: #############################################
     col4, col5 = st.columns(2)
@@ -111,6 +111,7 @@ else:
         orientation="h"
     )
     col5.plotly_chart(fig, use_container_width=True)
+    st.divider()
 
      # Product Performance Matrix
     st.subheader("Allg. Produktperformance Übersicht")
@@ -159,7 +160,7 @@ else:
         use_container_width=True,
         hide_index=True
     )
-
+    st.divider()
     ######### Linechart sales years
 
     st.subheader("Umsatzvergleich nach Jahr")
@@ -170,6 +171,8 @@ else:
         trend_table,
         x="Monat"
     )
+    st.divider()
+
     ################################# KEY INSIGHTS / AUTOMATED TEXT ########################################
 
     st.subheader("Key Insights")

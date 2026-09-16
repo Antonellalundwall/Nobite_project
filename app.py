@@ -1,6 +1,7 @@
 import streamlit as st
 from src.cleaning import clean_sales
 from src.cleaning import clean_sales, clean_inventory
+from src.navigation import show_navigation
 import pandas as pd
 import re
 
@@ -16,6 +17,7 @@ st.set_page_config(
     page_icon="🦟",
     layout="wide"
 )
+show_navigation()
 
 st.title("🦟 Nobite Analytics für Deutschland")
 st.write("Upload your reports and turn them into insights.")

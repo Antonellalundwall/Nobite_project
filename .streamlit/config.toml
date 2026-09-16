@@ -16,3 +16,6 @@ metricValueFontWeight = 600
 
 baseRadius = "medium"
 showWidgetBorder = true
+
+[client]
+showSidebarNavigation = false

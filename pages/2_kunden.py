@@ -84,7 +84,7 @@ else:
     col5.metric("Top-Region", region_name, border=True)
 
     col6.metric("Umsatzanteil Top-Großhändler", f"{customer_share:.1f} %", delta=f"{share_delta:.1f} %" if share_delta is not None else None, border=True)
-
+    st.divider()
 ################################### Charts: #############################################
     col7, col8 = st.columns(2)
 
@@ -110,7 +110,7 @@ else:
 
     fig = px.pie(revenue_by_top_customers, values="Umsatz", names="Kundengrupp", hole=0.4)
     col8.plotly_chart(fig, use_container_width=True)
-
+    st.divider()
 
 ############# Regional Performance map:
 #performance matrix
@@ -177,7 +177,7 @@ else:
             st.markdown(f"### {selected_region_name}")
             st.metric("Umsatz", f"{selected_region['Umsatz']:,.2f} €")
             st.metric("Verkaufte Stückzahl", f"{selected_region['Liefermenge']:,.0f}")
-
+    st.divider()
 ################################# KEY INSIGHTS #################################
     st.subheader("Key Insights")
 

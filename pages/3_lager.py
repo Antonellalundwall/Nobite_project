@@ -122,7 +122,7 @@ else:
     reichweite_text = f"{lagerreichweite:.1f}".replace(".", ",")
     col3.metric("Lagerreichweite (Periodenende)", format_reichweite(lagerreichweite), delta=f"{lagerreichweite_delta:.1f} %" if lagerreichweite_delta is not None else None, border=True)
     col4.metric("Lagerstatus (Periodenende)", lagerstatus, border=True)
-
+    st.divider()
     ################################### Charts ###################################
 
     # Stock Overview
@@ -138,7 +138,7 @@ else:
     )
 
     st.plotly_chart(fig, use_container_width=True)
-
+    st.divider()
     #Lagerabgang trend over time
     st.subheader("Lagerabgang nach Monaten")
     monthly_outflow = (inventory_all.groupby("Berichtsmonat", as_index=False)["Abgang"].sum().sort_values("Berichtsmonat"))
@@ -160,7 +160,7 @@ else:
 
     table_view = monthly_outflow.set_index("Label")[["Abgang (k)"]].T
     st.dataframe(table_view, use_container_width=True)
-
+    st.divider()
 #Matrix
     st.subheader("Lagerbestand & Lagerabgang nach Produkt")
 
@@ -180,7 +180,7 @@ else:
     "Abgang": "Lagerabgang"})
 
     st.dataframe(product_inventory,  use_container_width=True, hide_index=True)
-
+    st.divider()
 
 ################################# KEY INSIGHTS #################################
 
