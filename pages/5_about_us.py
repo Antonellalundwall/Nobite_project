@@ -1,7 +1,8 @@
 import streamlit as st
-
+from src.navigation import show_navigation
 
 st.set_page_config(page_title="About Us", page_icon="🦟", layout="wide")
+show_navigation()
 st.title("🦟 About Us")
 st.divider()
 

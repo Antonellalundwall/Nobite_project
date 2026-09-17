@@ -1,7 +1,7 @@
 import streamlit as st
 import plotly.express as px
 import pandas as pd
-
+from src.navigation import show_navigation
 from src.kpis import (
     total_revenue,
     total_units,
@@ -12,6 +12,7 @@ from src.kpis import (
 )
 
 st.set_page_config(page_title="Umsatz & Produktperformance", page_icon="📈", layout="wide")
+show_navigation()
 st.title("📈 Umsatz & Produktperformance")
 st.divider()
 

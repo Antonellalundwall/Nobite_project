@@ -1,7 +1,7 @@
 import streamlit as st
 import plotly.express as px
 import pandas as pd
-
+from src.navigation import show_navigation
 from src.kpis import (
     calculate_endbestand,
     calculate_lagerabgang,
@@ -24,6 +24,7 @@ def format_reichweite(monate):
         return f"ca. {ganze_monate} Monate & {tage} Tage"
 
 st.set_page_config(page_title="Lager & Planung", page_icon="📈", layout="wide")
+show_navigation()
 st.title("📈 Lager & Nachfrage")
 st.divider()
 

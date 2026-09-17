@@ -2,6 +2,7 @@ import streamlit as st
 import plotly.express as px
 import json
 import pandas as pd
+from src.navigation import show_navigation
 
 from src.kpis import (
     top_customer,
@@ -11,6 +12,7 @@ from src.kpis import (
 )
 
 st.set_page_config(page_title="Kunden & Regionale Performance in Deutschland", page_icon="📈", layout="wide")
+show_navigation()
 st.title("📈 Kunden & Regionale Performance")
 st.divider()
 
