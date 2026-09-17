@@ -53,6 +53,7 @@ else:
     col_a, col_b = st.columns(2)
     selected_period = col_a.selectbox("Periode", periods, index=len(periods) - 1)
     selected_comparison = col_b.selectbox("Vergleichen mit", ["Kein Vergleich"] + periods)
+    st.divider()
 
      # Filter selected period
     current_df = sales_view[
